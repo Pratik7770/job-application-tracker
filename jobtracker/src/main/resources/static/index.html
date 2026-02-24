@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Job Tracker</title>
+</head>
+<body>
+<h2>Add Job Application</h2>
+
+Company: <input id="company"><br><br>
+Role: <input id="role"><br><br>
+Status: <input id="status"><br><br>
+Date: <input id="date"><br><br>
+
+<button onclick="addJob()">Submit</button>
+
+<script>
+function addJob() {
+    fetch("http://localhost:8081/jobs", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            companyName: document.getElementById("company").value,
+            role: document.getElementById("role").value,
+            status: document.getElementById("status").value,
+            appliedDate: document.getElementById("date").value
+        })
+    }).then(res => res.json()).then(data => alert("Saved!"));
+}
+</script>
+
+</body>
+</html>
