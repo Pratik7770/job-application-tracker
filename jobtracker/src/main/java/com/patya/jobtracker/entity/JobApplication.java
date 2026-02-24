@@ -1,6 +1,11 @@
 package com.patya.jobtracker.entity;
 
+import java.time.LocalDate;
+
+import com.patya.jobtracker.enums.Status;
+
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "job_applications")
@@ -10,10 +15,16 @@ public class JobApplication {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "Company name is required")
     private String companyName;
+
+    @NotBlank(message = "Role is required")
     private String role;
-    private String status;   // Applied / Interview / Rejected / Selected
-    private String appliedDate;
+
+    @Enumerated(EnumType.STRING)
+    private Status status;
+
+    private LocalDate appliedDate;
 
     // Getters and Setters
 
@@ -41,19 +52,19 @@ public class JobApplication {
         this.role = role;
     }
 
-    public String getStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 
-    public String getAppliedDate() {
+    public LocalDate getAppliedDate() {
         return appliedDate;
     }
 
-    public void setAppliedDate(String appliedDate) {
+    public void setAppliedDate(LocalDate appliedDate) {
         this.appliedDate = appliedDate;
     }
 }

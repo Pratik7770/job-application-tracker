@@ -1,50 +1,39 @@
 package com.patya.jobtracker.controller;
 
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
 import com.patya.jobtracker.entity.JobApplication;
-import com.patya.jobtracker.repository.JobApplicationRepository;
+import com.patya.jobtracker.service.JobApplicationService;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/jobs")
 public class JobApplicationController {
 
     @Autowired
-    private JobApplicationRepository repo;
+    private JobApplicationService service;
 
-    // Add Job Application
+   
+
     @PostMapping
-    public JobApplication addJob(@RequestBody JobApplication job) {
-        return repo.save(job);
+    public JobApplication addJob(@Valid @RequestBody JobApplication job) {
+        return service.addJob(job);
     }
 
-    // Get All Jobs
     @GetMapping
     public List<JobApplication> getAllJobs() {
-        return repo.findAll();
+        return service.getAllJobs();
     }
 
-    // Delete Job
-    @DeleteMapping("/{id}")
-    public String deleteJob(@PathVariable Long id) {
-        repo.deleteById(id);
-        return "Deleted Successfully";
-    }
-
-    // Update Status
     @PutMapping("/{id}")
     public JobApplication updateJob(@PathVariable Long id, @RequestBody JobApplication job) {
-        JobApplication existing = repo.findById(id).orElse(null);
-        if (existing != null) {
-            existing.setCompanyName(job.getCompanyName());
-            existing.setRole(job.getRole());
-            existing.setStatus(job.getStatus());
-            existing.setAppliedDate(job.getAppliedDate());
-            return repo.save(existing);
-        }
-        return null;
+        return service.updateJob(id, job);
+    }
+
+    @DeleteMapping("/{id}")
+    public String deleteJob(@PathVariable Long id) {
+        service.deleteJob(id);
+        return "Deleted Successfully";
     }
 }
